@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convite 15 Anos - Ana Luiza</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: url('castelo-princesa.jpg') center/cover no-repeat fixed;
+        color: #333;
+        overflow-x: hidden;
+        height: 100vh;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.35);
+        backdrop-filter: blur(2px);
+        z-index: -1;
+    }
+
+    .glitter {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: -1;
+    }
+
+    .glitter span {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: rgba(255,255,255,0.9);
+        border-radius: 50%;
+        bottom: 100%;
+        box-shadow: 0 0 10px white;
+        animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+        to {
+            transform: translateY(120vh);
+            opacity: 0;
+        }
+    }
+
+    .center-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 20px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 450px;
+        background: rgba(255,255,255,0.9);
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 0 25px rgba(0,0,0,0.25);
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 34px;
+        color: #d63384;
+        margin-bottom: 5px;
+    }
+
+    h2 {
+        font-size: 20px;
+        margin-top: 0;
+        color: #333;
+    }
+
+    .btn {
+        background: #d63384;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 10px;
+        border: none;
+        margin: 10px 0;
+        width: 90%;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    #modal {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: #fff;
+        padding: 25px;
+        width: 90%;
+        max-width: 380px;
+        border-radius: 15px;
+        text-align: left;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        margin-top: 10px;
+    }
+</style>
+
+</head>
+<body>
+
+<div class="overlay"></div>
+<div class="glitter" id="glitter"></div>
+
+<audio id="bgMusic" autoplay loop muted playsinline>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="center-container">
+    <div class="card">
+        <h1>Ana Luiza</h1>
+        <h2>Faz 15 anos!</h2>
+
+        <p><strong>Data:</strong> 20/12/2025</p>
+        <p><strong>Horário:</strong> 15:00</p>
+        <p><strong>Local:</strong> Severino Valeriano de Oliveira</p>
+
+        <button class="btn" id="btnMusic">🎵 Ouvir Música</button>
+        <button class="btn" id="btnRSVP">Confirmar Presença</button>
+    </div>
+</div>
+
+<div id="modal">
+    <div class="modal-content">
+        <h3>Confirmar Presença</h3>
+        <input type="text" id="nome" placeholder="Seu nome">
+        <!-- <input type="text" id="data" placeholder="Data (opcional)"> -->
+        <input type="text" id="confirmar" placeholder="Vai? (Sim ou Não)">
+        <textarea id="msg" placeholder="Mensagem (opcional)"></textarea>
+
+        <button class="btn" id="btnEnviar">Enviar</button>
+        <button class="btn" onclick="closeModal()" style="background:#555">Cancelar</button>
+    </div>
+</div>
+
+<script>
+// Música
+const audio = document.getElementById("bgMusic");
+const btnMusic = document.getElementById("btnMusic");
+
+document.addEventListener("DOMContentLoaded", () => {
+    audio.muted = true;
+    audio.play().catch(()=>{});
+});
+
+btnMusic.addEventListener("click", () => {
+    audio.muted = false;
+    if (audio.paused) {
+        audio.play();
+        btnMusic.textContent = "⏸ Pausar Música";
+    } else {
+        audio.pause();
+        btnMusic.textContent = "🎵 Ouvir Música";
+    }
+});
+
+// Glitter
+const glitterBox = document.getElementById("glitter");
+function createGlitter() {
+    const g = document.createElement("span");
+    const size = Math.random() * 6 + 4;
+    const left = Math.random() * 100;
+    g.style.width = size + "px";
+    g.style.height = size + "px";
+    g.style.left = left + "vw";
+    g.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    glitterBox.appendChild(g);
+    setTimeout(() => g.remove(), 7000);
+}
+setInterval(createGlitter, 120);
+
+// Modal
+document.getElementById("btnRSVP").onclick = () => {
+    document.getElementById("modal").style.display = "flex";
+};
+
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+// ENVIO PARA O GOOGLE FORMS
+const GOOGLE_FORM_URL =
+"https://docs.google.com/forms/d/e/1FAIpQLScY2zVAbtG9fckzdzpKCcvcibp4V-CtZlwFGWhN5DI_AwBWvQ/formResponse";
+
+document.getElementById("btnEnviar").onclick = () => {
+    const nome = document.getElementById("nome").value;
+    const confirmar = document.getElementById("confirmar").value;
+    const msg = document.getElementById("msg").value;
+
+    if (!nome || !confirmar) {
+        alert("Preencha no mínimo o nome e se vai ou não!");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("entry.872058416", nome);       // Nome
+    formData.append("entry.1489329222", confirmar); // Vai? (Sim ou Não)
+    formData.append("entry.1868174483", msg);       // Mensagem
+
+    // Se criar o campo 'Data' no Google Forms, descomente e coloque o ID correto
+    // formData.append("entry.XXXXXXXXX", data);
+
+    fetch(GOOGLE_FORM_URL, {
+        method: "POST",
+        body: formData,
+        mode: "no-cors"
+    });
+
+    alert("Confirmação enviada com sucesso! ❤️");
+    closeModal();
+};
+</script>
+
+</body>
+</html>
