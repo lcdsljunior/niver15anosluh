@@ -6,94 +6,83 @@
 <title>Convite 15 Anos - Ana Luiza</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins&display=swap');
+
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
     background: url('castelo-princesa.jpg') center/cover no-repeat fixed;
     color: #333;
-    overflow-x: hidden;
-    height: 100vh;
 }
 
 .overlay {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.35);
-    backdrop-filter: blur(2px);
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(214,51,132,0.25));
     z-index: -1;
 }
 
 .glitter {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    inset: 0;
     pointer-events: none;
-    overflow: hidden;
     z-index: -1;
 }
 
 .glitter span {
     position: absolute;
-    width: 8px;
-    height: 8px;
-    background: rgba(255,255,255,0.9);
+    width: 6px;
+    height: 6px;
+    background: white;
     border-radius: 50%;
-    bottom: 100%;
-    box-shadow: 0 0 10px white;
+    box-shadow: 0 0 12px white;
     animation: fall linear infinite;
 }
 
 @keyframes fall {
-    to {
-        transform: translateY(120vh);
-        opacity: 0;
-    }
+    to { transform: translateY(120vh); opacity: 0; }
 }
 
 .center-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    padding: 20px;
+    min-height: 100vh;
 }
 
 .card {
-    width: 100%;
-    max-width: 450px;
-    background: rgba(255,255,255,0.9);
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 0 25px rgba(0,0,0,0.25);
+    max-width: 460px;
+    background: rgba(255,255,255,0.95);
+    padding: 35px 25px;
+    border-radius: 25px;
     text-align: center;
+    box-shadow: 0 0 40px rgba(214,51,132,0.4);
 }
 
-h1 {
-    font-size: 34px;
+.card h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
     color: #d63384;
-    margin-bottom: 5px;
 }
 
-h2 {
-    font-size: 20px;
-    margin-top: 0;
+.card h2 {
+    font-size: 22px;
+    margin-top: 5px;
 }
 
 .btn {
-    background: #d63384;
-    color: white;
-    padding: 12px 18px;
-    border-radius: 10px;
-    border: none;
-    margin: 10px 0;
     width: 90%;
+    padding: 14px;
+    border-radius: 30px;
+    border: none;
+    margin-top: 12px;
     font-size: 16px;
     cursor: pointer;
+    color: white;
+    background: linear-gradient(135deg, #d63384, #ff7eb3);
 }
 
-/* MODAL BOAS-VINDAS */
-#welcomeModal {
+#welcomeModal, #modal {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.75);
@@ -103,50 +92,39 @@ h2 {
     z-index: 9999;
 }
 
-.welcome-content {
+.welcome-content, .modal-content {
     background: white;
-    padding: 35px 25px;
-    border-radius: 20px;
+    padding: 30px;
+    border-radius: 25px;
     text-align: center;
-    max-width: 360px;
-    width: 90%;
-    animation: fadeIn 0.6s ease;
-}
-
-.welcome-content h1 {
-    color: #d63384;
-    font-size: 28px;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-/* MODAL RSVP */
-#modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background: #fff;
-    padding: 25px;
     width: 90%;
     max-width: 380px;
-    border-radius: 15px;
+}
+
+.choice-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    border-radius: 25px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: white;
+}
+
+.yes { background: linear-gradient(135deg, #28a745, #7bed9f); }
+.no  { background: linear-gradient(135deg, #dc3545, #ff6b6b); }
+
+.choice-btn.selected {
+    outline: 3px solid gold;
 }
 
 input, textarea {
     width: 100%;
     padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
     margin-top: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
 }
 </style>
 </head>
@@ -156,8 +134,9 @@ input, textarea {
 <!-- MODAL BOAS-VINDAS -->
 <div id="welcomeModal">
     <div class="welcome-content">
-        <h1>✨ Seja bem-vindo(a) ✨</h1>
-        <button class="btn" id="btnStart">🎵 Toque para continuar</button>
+        <h2>✨ Seja bem-vindo(a) ✨</h2>
+        <p>Toque para viver este momento especial</p>
+        <button class="btn" onclick="iniciar()">🎵 Toque para continuar</button>
     </div>
 </div>
 
@@ -173,68 +152,93 @@ input, textarea {
         <h1>Ana Luiza 👑</h1>
         <h2>Faz 15 anos!</h2>
 
-        <p><strong>Data:</strong> 20/12/2025</p>
-        <p><strong>Horário:</strong> 17:00</p>
-        <p><strong>Local:</strong> Severino Valeriano de Oliveira</p>
+        <p>📅 20/12/2025</p>
+        <p>⏰ 17:00</p>
+        <p>📍 Severino Valeriano de Oliveira</p>
 
-        <button class="btn" id="btnMusic">🎵 Ouvir Música</button>
-        <button class="btn" id="btnRSVP">Confirmar Presença</button>
+        <button class="btn" onclick="toggleMusic()">🎶 Pausar / Tocar Música</button>
+        <button class="btn" onclick="abrirModal()">💌 Confirmar Presença</button>
     </div>
 </div>
 
 <!-- MODAL RSVP -->
-<div id="modal">
+<div id="modal" style="display:none">
     <div class="modal-content">
-        <h3>Confirmar Presença</h3>
-        <input type="text" id="nome" placeholder="Seu nome">
-        <input type="text" id="confirmar" placeholder="Vai? (Sim ou Não)">
-        <textarea id="msg" placeholder="Mensagem (opcional)"></textarea>
+        <h3>Você poderá estar presente?</h3>
 
-        <button class="btn" id="btnEnviar">Enviar</button>
-        <button class="btn" onclick="closeModal()" style="background:#555">Cancelar</button>
+        <input type="text" id="nome" placeholder="Seu nome">
+
+        <button class="choice-btn yes" onclick="selecionar('Sim', this)">💖 Vou sim</button>
+        <button class="choice-btn no" onclick="selecionar('Não', this)">😔 Não poderei ir</button>
+
+        <textarea id="msg" placeholder="Mensagem carinhosa (opcional)"></textarea>
+
+        <button class="btn" onclick="enviar()">📨 Enviar confirmação</button>
+        <button class="btn" style="background:#777" onclick="fecharModal()">Cancelar</button>
     </div>
 </div>
 
 <script>
-// MÚSICA
 const audio = document.getElementById("bgMusic");
-const btnMusic = document.getElementById("btnMusic");
-const btnStart = document.getElementById("btnStart");
-const welcomeModal = document.getElementById("welcomeModal");
-
-btnStart.addEventListener("click", () => {
-    audio.play();
-    welcomeModal.style.display = "none";
-    btnMusic.textContent = "⏸ Pausar Música";
-});
-
-btnMusic.addEventListener("click", () => {
-    if (audio.paused) {
-        audio.play();
-        btnMusic.textContent = "⏸ Pausar Música";
-    } else {
-        audio.pause();
-        btnMusic.textContent = "🎵 Ouvir Música";
-    }
-});
-
-// GLITTER
 const glitterBox = document.getElementById("glitter");
+let resposta = "";
+
+function iniciar() {
+    audio.play();
+    document.getElementById("welcomeModal").style.display = "none";
+}
+
+function toggleMusic() {
+    audio.paused ? audio.play() : audio.pause();
+}
+
+function abrirModal() {
+    document.getElementById("modal").style.display = "flex";
+}
+
+function fecharModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+function selecionar(valor, btn) {
+    resposta = valor;
+    document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+}
+
 setInterval(() => {
     const g = document.createElement("span");
     g.style.left = Math.random() * 100 + "vw";
     g.style.animationDuration = (Math.random() * 3 + 3) + "s";
     glitterBox.appendChild(g);
     setTimeout(() => g.remove(), 7000);
-}, 120);
+}, 150);
 
-// MODAL RSVP
-document.getElementById("btnRSVP").onclick = () => {
-    document.getElementById("modal").style.display = "flex";
-};
+// GOOGLE FORMS
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScY2zVAbtG9fckzdzpKCcvcibp4V-CtZlwFGWhN5DI_AwBWvQ/formResponse";
 
-function closeModal() {
-    document.getElementById("modal").style.display = "none";
+function enviar() {
+    const nome = document.getElementById("nome").value.trim();
+    const msg = document.getElementById("msg").value.trim();
+
+    if (!nome || !resposta) {
+        alert("Informe seu nome e selecione uma opção 💖");
+        return;
+    }
+
+    const data = new FormData();
+    data.append("entry.872058416", nome);
+    data.append("entry.1489329222", resposta);
+    data.append("entry.1868174483", msg);
+
+    fetch(FORM_URL, {
+        method: "POST",
+        body: data,
+        mode: "no-cors"
+    });
+
+    alert("Confirmação enviada com sucesso! ✨👑");
+    fecharModal();
 }
 </script>
 
